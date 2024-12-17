@@ -1,0 +1,18 @@
+ {% extends "layout.html" %}
+
+{% block title %}SigMA{% endblock %}
+
+{% block content %}
+    <h1>Welcome to SigMA</h1>
+    <form action="login" id="login" method="post">
+
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" required>
+
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+
+        <button type="submit">Connexion</button>
+    </form>
+{% endblock %}*
+
