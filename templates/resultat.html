@@ -1,0 +1,30 @@
+{%extends  "layout.html"%}
+
+{%block content%}
+
+
+<div class="bcontainer_conf" id="container_conf">
+        <div class="container_conf" id="container_v">
+
+           <a href="{{url_for('profile')}}"><img src="{{ url_for('static', filename='cartes/' ~ confronte.vg ~ '.jpg') }}" alt="{{confronte.vg}}" class="carte_confornte"></a>
+
+        </div>
+
+
+        <p>        <div class="container_conf" id="container_p">
+
+                   <a href="{{url_for('profile')}}"><img src="{{ url_for('static', filename='cartes/' ~ confronte.pg ~ '.jpg') }}" alt="{{confronte.vp}}" class="carte_confornte"></a>
+
+        </div>
+
+        
+
+</div>
+
+
+</div>
+
+
+
+
+{%endblock%}

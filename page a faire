@@ -1,0 +1,28 @@
+— Une page de connexion qui demande à l’utilisateur son adresse e-mail et son mot
+de passe.
+— Une page ma collection qui indique les cartes possédées par l’utilisateurs et avec
+un bouton permettant d’acheter une nouvelle carte au hasard aux prix d’1 UAV.
+— Une page mes decks qui donne la liste des decks de l’utilisateur.
+— Une page permettant d’indiquer le résultat d’une partie de Cigma en indiquant
+les decks impliqués et le vainqueur. (Evidemment, cette page disparaîtra une fois
+que l’autre équipe de développeurs aura implémenté le jeu en ligne.)
+— Une page montrant le profil d’un utilisateur. En plus de son pseudo, elle affiche la
+liste de ses decks et des cinq dernières parties qu’il a joué (et avec quel deck).
+— neU page permettant la construction d’un deck légal. Lors de l’ajout d’une carte,
+on permettra la recherche des cartes par leur nom, leur type, etc.
+— Une page permettant de voir toutes les informations pertinentes sur un deck :
+son créateur, son titre, le texte expliquant la stratégie du deck, son général, la
+liste de ses cartes triées par coût croissant, ses statistiques (nombre de victoires et
+nombre de défaites avec ce deck). Chaque carte doit être représentée entièrement,
+par exemple :
+Legolas, cout : VVVJ, type : elfe et guerrier, attaque : 2, défense : 2.
+D’autre part, un bouton doit permettre de copier le deck parmi ses propres decks.
+— Une page qui permet à l’utilisateur connexté de suggérer une modification d’un deck
+d’un autre utilisateur, c’est-à-dire d’enlever des cartes et d’en rajouter d’autres.
+— Une page permettant de visualiser une telle suggestion de modification d’un deck :
+le nom du deck, quel utilisateur a suggéré la modification, quelles sont les cartes
+en moins et les cartes en plus. Si l’utilisateur connecté est le propriétaire du
+deck, il peut créer un nouveau deck qui correspond au deck d’origine auxquels
+sont appliquées les modifications suggérées. Sinon, l’utilisateur peut indiquer
+qu’il approuve la modification. (Le nombre de personnes ayant approuvé cette
+modification doit aussi être indiqué sur cette page.)<

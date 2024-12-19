@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+
+
+{%block title %}Collection{% endblock %}
+
+{% block content %}
+    <div id="titre" class="container">
+        <h1>Collection</h1>
+        <p>Here is your collection</p>
+    </div>
+
+    <div class="tableau_carte" id="tableau_carte">
+        <table>
+            {% for carte in cartes %}
+                <tr>
+                    <td>{{ carte.nom }}</td>
+                    <td><img src="{{ url_for('static', filename='cartes/' ~ carte.nom ~ '.jpg') }}" alt="{{ carte.nom }}"></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="ajout_carte" id="ajout_carte">
+        <form action="ajout_carte" method="post">
+            <button type="submit">Ajouter Aleatoirement (1 UAV) </button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block erreur %}<p>{{msgerror}}</p>{% endblock erreur %}

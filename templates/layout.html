@@ -10,7 +10,22 @@
         {%endblock%}
     </head>
     <body>
+
+    {%if infos %}
+    <div class="bar_info">
+        <h2>{{infos[1]}}</h2>
+        <p>{{infos[4]}}</p>
+        
+    </div>
+    {%endif%}
         
         <div class="containt">{% block content %}{% endblock %}</div>
+
+        <div class="msgerror" id="msgerror">
+            {% if error %}
+                <p>{% block erreur %}{% endblock  %}</p>
+            {% endif %}
+        </div>
+        
     </body>
 </html>
