@@ -42,3 +42,8 @@ body {
     padding: 5px; /* Optional: Add padding inside the border */
     background-color: #f9f9f9; /* Optional: Add a background color */
 }
+
+
+#g {
+    fill: #cd0d0d;
+}

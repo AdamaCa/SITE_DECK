@@ -34,13 +34,16 @@
                 <li>
                     <div id="deck_general" clss="deck_general">
                         <p>{{d.nom_général}}</p>
-                        <img src="{{url_for('static', filename='cartes/' ~ d.nom_général ~ '.jpg' )}}" alt="image du deck">
+                        <a href="{{url_for('deck', id_deck=d.id_deck)}}">
+                            <img src="{{url_for('static', filename='cartes/' ~ d.nom_général ~ '.jpg' )}}" alt="image du deck">
+                        </a>
                     </div>
                 </li>
             {% endfor %}
         </ul>
     
     {% else %}
+        <p>Aucun deck trouvé.</p>
     {% endif %}
     
     </div>

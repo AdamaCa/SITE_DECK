@@ -1,9 +1,36 @@
 {% extends "layout.html" %}
 
 
-{% block title %}Mes deck{% endblock %}
+{% block title %}{{deck.nom}}{% endblock %}
 
 {% block content %}
+
+<div class="deck">
+    <div class="container_deck">
+        <h2>{{deck.nom}}</h2>
+        <p>{{deck.description}}</p>
+        <p>{{deck.nom_général}}</p>
+        <p>{{deck.taux_victoire if deck.taux_victoire != None else '0'}} / {{deck.taux_defaite if deck.taux_defaite != None else '0'}}</p>
+
+    </div>
+{% if cartes != None %}
+    <ul class="liste_cartes" id="deck_cartes">
+        {% for c in cartes %}
+            <li>
+                <div class="container_carte" id="{{'g' if c.nom == deck.nom_général else ''}}">
+                    <img src="{{ url_for('static', filename='cartes/' ~ c.nom ~ '.jpg') }}" alt="carte" class="carte">
+                    <p> {{c.nom}}</p>
+                    <p>{{c.types}}</p>
+                    <p>{{c.coc}}</p>
+                    <p>{{c.atk_}}</p>
+                    <p>{{c.def_}}</p>
+                
+
+                </div>
+            </li>
+        {% endfor %}
+
+{% endif %}
     
     
 

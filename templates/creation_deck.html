@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}Construction{% endblock %}
+
+{% block content %}
+    <div class="container_construction">
+        <h1>Construction</h1>
+        <p>Here you can build your deck</p>
+    </div>
+
+    <div class="container_construction">
+        <form action="construction" method="post">
+            <label for="nom">Nom du deck</label>
+            <input type="text" id="nom" name="nom" required>
+            <br>
+            <label for="description">Description</label>
+            <textarea placeholder="Decrivez votre strategie" rows="4" cols="50" id="desc" name="desc" ></textarea>
+            <br>
+            <label for="nom_general">Général</label>
+            <select id="nom_general" name="general" required>
+                {% for c in cartes %}
+                    <option value="{{c.nom}}">{{c.nom}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Creer deck</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block erreur %}
+    <p>{{msgerror}}</p>
+{% endblock erreur %}
+

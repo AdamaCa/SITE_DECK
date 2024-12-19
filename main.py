@@ -109,14 +109,27 @@ def ajout_carte():
 
 
 #Route de la page  deck
-@app.route('/deck')
-def deck():
+@app.route('/deck/<int:id_deck>')
+def deck(id_deck):
+    
     with db.connect() as conn:
+        
         with conn.cursor() as cur:
-            cur.execute('SELECT * FROM deck where id_joueur = %s', (session['id'],))
-            decks = cur.fetchall()
             
-    return  render_template('deck.html', decks=decks, infos=session["infos_profile"])
+            
+            
+            #On recupere les infos du deck
+            cur.execute('SELECT deck.id_deck ,deck.nom , deck.nom_général, deck.description, taux_victoire, taux_defaite  FROM deck left join (taux_victoire_deck_solo natural join taux_defaite_solo) as t on t.id_deck = deck.id_deck where deck.id_deck = %s', (id_deck,))
+            deck = cur.fetchone()
+            
+            if deck == None:
+                return redirect(url_for('profile'))
+            
+            #On recupere les cartes du deck
+            cur.execute('SELECT * FROM contient natural join stats_cartes where id_deck = %s order by coc asc', (id_deck,))
+            cartes = cur.fetchall()
+                    
+    return  render_template('deck.html', cartes=cartes, deck=deck, infos=session["infos_profile"])
 
 
 @app.route("/resultat")
@@ -145,10 +158,33 @@ def resultat():
 
 
 
+@app.route("/creation_deck")
+def creation_deck():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    #On recupere les noms des cartes pour le général
+    with db.connect() as conn:
+        with conn.cursor() as cur:
+            cur.execute('SELECT * FROM carte' )
+            cartes = cur.fetchall()
+    return render_template('creation_deck.html',cartes=cartes, infos=session["infos_profile"])
 
-
-
-
+@app.route('/construction', methods=['POST'])
+def creation_bdd_deck():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    nom = request.form['nom']
+    desc = request.form['desc']
+    general = request.form['general']
+    with db.connect() as conn:
+        with conn.cursor() as cur:
+            cur.execute('INSERT INTO deck (nom, description, nom_général, id_joueur) VALUES (%s, %s, %s, %s) returning id_deck', (nom, desc, general, session['id']))
+            id_deck = cur.fetchone()[0]
+            if id_deck == None:
+                return redirect(url_for('creation_deck'))
+    return redirect(url_for('creation_deck'))
 
 if __name__ == '__main__':
   app.run()
