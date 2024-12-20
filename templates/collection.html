@@ -4,28 +4,45 @@
 
 {%block title %}Collection{% endblock %}
 
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/collection.css') }}">
+{% endblock %}
 {% block content %}
-    <div id="titre" class="container">
-        <h1>Collection</h1>
-        <p>Here is your collection</p>
-    </div>
+ 
 
-    <div class="tableau_carte" id="tableau_carte">
-        <table>
-            {% for carte in cartes %}
-                <tr>
-                    <td>{{ carte.nom }}</td>
-                    <td><img src="{{ url_for('static', filename='cartes/' ~ carte.nom ~ '.jpg') }}" alt="{{ carte.nom }}"></td>
-                </tr>
+<nav>
+    <ul class="nav-links">
+        <li><a href="{{ url_for('home') }}">Accueil</a></li>
+        <li><a href="{{ url_for('profile') }}">Profil</a></li>
+        <li><a href="{{ url_for('deck') }}">Deck</a></li>
+        <li><a href="{{ url_for('resultat') }}">Résultat</a></li>
+        <li><a href="{{ url_for('construction') }}">Construction</a></li>
+        <li><a href="{{ url_for('proposition') }}">Proposition</a></li>
+        <li><a href="{{ url_for('collection') }}">Collection</a></li>
+    </ul>
+</nav>
+
+    <div class="container">
+    <div class="content-wrapper">
+        <div class="grille_cartes">
+            {% for c in cartes %}
+                <div class="carte">
+                    <img src="{{ url_for('static', filename='cartes/' ~ c.nom ~ '.jpg') }}" alt="carte">
+                    <div class="infos_carte">
+                        <p>{{ c.nom }}</p>
+                        <p>{{ c.types }}</p>
+                        <p>{{ c.coc }}</p>
+                        <p>ATK : {{ c.atk_ }}</p>
+                        <p>DEF : {{ c.def_ }}</p>
+                    </div>
+                </div>
             {% endfor %}
-        </table>
+        </div>
     </div>
+</div>
 
-    <div class="ajout_carte" id="ajout_carte">
-        <form action="ajout_carte" method="post">
-            <button type="submit">Ajouter Aleatoirement (1 UAV) </button>
-        </form>
-    </div>
+
+
 {% endblock %}
 
 {% block erreur %}<p>{{msgerror}}</p>{% endblock erreur %}

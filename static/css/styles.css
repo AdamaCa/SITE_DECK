@@ -108,7 +108,6 @@ a:hover::after {
 }
 
 
-/* Style for the photo list */
 .liste_cartes {
     list-style-type: none; /* Remove bullet points */
     padding: 0; /* Remove default padding */

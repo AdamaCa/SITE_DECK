@@ -64,7 +64,7 @@ def collection():
     
     with db.connect() as conn:
         with conn.cursor() as cur:
-            cur.execute('SELECT * FROM collectionne where id_joueur = %s', (session['id'],))
+            cur.execute('SELECT * FROM collectionne natural join stats_cartes where id_joueur = %s', (session['id'],))
             cartes = cur.fetchall()
     return render_template('collection.html', cartes=cartes, infos=session["infos_profile"])
 
