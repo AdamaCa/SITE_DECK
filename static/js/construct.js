@@ -1,0 +1,1 @@
+var i = setInterval(function(){$("#trace").val($("input:checked").val());},100);

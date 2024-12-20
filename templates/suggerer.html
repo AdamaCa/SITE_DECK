@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/construct.css') }}">
+{% endblock %}
+
+{% block title %}Suggestion{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="content-wrapper">
+        <div class="grille_cartes">
+            {% for c in cartes_deck %}
+                <div class="carte">
+                    <img src="{{ url_for('static', filename='cartes/' ~ c.nom ~ '.jpg') }}" alt="carte" id="{{'g' if c.nom == deck.nom_général else ''}}">
+                    <div class="infos_carte">
+                        <p>{{ c.nom }}</p>
+                        <p>{{ c.types }}</p>
+                        <p>{{ c.coc }}</p>
+                        <p>ATK : {{ c.atk_ }}</p>
+                        <p>DEF : {{ c.def_ }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        </div>
+        <div class="container_select_sugg">
+            <form action="{{url_for('suggestion')}}" method="POST">
+                <input type="hidden" name="id_deck" value="{{deck.id_deck}}" >
+                <label for="liste_cartes1" >Carte a enlever</label>
+                <select id="liste_cartes1" name="carte_a_enlever" class="liste_cartes">
+                    {% for c in cartes_deck %}
+                        {%if c.nom != deck.nom_général%}
+                        <option  value="{{ c.nom }}">{{ c.nom }}</option>
+                        {%endif%}
+                    {% endfor %}
+                </select>
+
+                <label for="liste_cartes2" >Carte a Ajouter</label>
+                <select id="liste_cartes2" name="carte_a_ajouter" class="liste_cartes">
+                    {% for c in all_cartes %}
+                        <option  value="{{ c.nom }}">{{ c.nom }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Suggerer</button>
+            </form>
+
+            <div class="container_select_cartes">
+            <form action="{{url_for('suggerer_deck', id_deck=deck.id_deck)}}">
+                <label for="recherche">Rechercher une carte</label>
+                <input type="text" id="recherche" name="recherche" placeholder="Nom, type, coc, atk, def">
+                    <br>
+                <label for="liste_cartes" >Options de recherche</label>
+                <select id="liste_cartes" name="col"  >
+                    {% for col in  liste_col %}
+                        <option  value="{{ col }}">{{ col }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Rechercher</button>
+            </form>
+        </div>
+        </div>
+</div>
+
+
+
+{% endblock %}

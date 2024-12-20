@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+<h1>Decks</h1>
+<form  action="recherche_deck">
+    <input type="text" name="recherche" placeholder="Recherche par nom ">
+    <button type="submit">Recherche</button>
+</form>
+
+<ul class="liste_cartes", id="liste_decks">
+            {% for d in decks%}
+                <li>
+                    <div id="deck_general" clss="deck_general">
+                        <p>{{d.nom}}</p>
+                        <a href="{{url_for('deck', id_deck=d.id_deck)}}">
+                            <img src="{{url_for('static', filename='cartes/' ~ d.nom_général ~ '.jpg' )}}" alt="image du deck">
+                        </a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        
+{% endblock content %}

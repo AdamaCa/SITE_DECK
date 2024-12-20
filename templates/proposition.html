@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{%block title%}Proposition{%endblock%}
+{%block head%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/proposition.css') }}">
+{%endblock%}
+{%block content%}
+
+
+<table>
+    <tr>
+        <th>Carte A ENLEVER</th>
+        <th>Carte A RAJOUTER</th>
+        <th>Choix</th>
+        <th></th>
+    {% for prop in propositions  %}
+    
+    <tr>
+
+
+      <td>
+        <div class="container">
+            <div class="content-wrapper">
+                <div class="carte">
+                    <img src="{{ url_for('static', filename='cartes/' ~ prop.nom_ec ~ '.jpg') }}" alt="carte" >
+                    <div class="infos_carte">
+                        <p>{{ prop.nom_ec }}</p>
+                        <p>{{ prop.types_ec }}</p>
+                        <p>{{ prop.coc_ec }}</p>
+                        <p>ATK : {{ prop.atk__ec }}</p>
+                        <p>DEF : {{ prop.def__ec }}</p>
+                    </div>
+                </div>
+            </div>     
+        </div> 
+      </td>
+      <td>
+        <div class="container">
+            <div class="content-wrapper">
+                <div class="carte">
+                    <img src="{{ url_for('static', filename='cartes/' ~ prop.nom_ac ~ '.jpg') }}" alt="carte" >
+                    <div class="infos_carte">
+                        <p>{{ prop.nom_ac }}</p>
+                        <p>{{ prop.types_ac }}</p>
+                        <p>{{ prop.coc_ac }}</p>
+                        <p>ATK : {{ prop.atk_ac }}</p>
+                        <p>DEF : {{ prop.def_ac }}</p>
+                    </div>
+                </div>
+            </div>     
+        </div> 
+      </td>
+
+
+      <td class="buttons-cell">
+        <form action="{{url_for('choix_prop')}}" method="POST">
+            <input type="hidden" name="choix" value="accepter">
+                <input type="hidden" name="ac" value="{{prop.nom_ac}}">
+                <input type="hidden" name="ec" value="{{prop.nom_ec}}">
+                <input type="hidden" name="id_proprio" value="{{prop.id_proprio}}">
+                <input type="hidden" name="id_joueur" value="{{prop.id_joueur}}">
+                <input type="hidden" name="id_deck" value="{{prop.id_deck}}">
+            <button type="submit">Accepter</button>
+        </form>
+      </td>
+        <td class = buttons-cell>
+            <form action="{{url_for('choix_prop')}}" method="POST">
+                <input type="hidden" name="ac" value="{{prop.nom_ac}}">
+                <input type="hidden" name="ec" value="{{prop.nom_ec}}">
+                <input type="hidden" name="id_proprio" value="{{prop.id_proprio}}">
+                <input type="hidden" name="id_joueur" value="{{prop.id_joueur}}">
+                <input type="hidden" name="id_deck" value="{{prop.id_deck}}">
+                <input type="hidden" name="choix" value="refuser">
+                <button type="submit">Refuser</button>
+            </form>
+    
+    </tr>
+      
+    {% endfor %} 
+
+
+</table>
+
+
+{%endblock%}
+
+{% block erreur %}<p>{{msgerror}}</p>{% endblock erreur %}

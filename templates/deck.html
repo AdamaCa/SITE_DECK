@@ -1,39 +1,74 @@
 {% extends "layout.html" %}
 
+{%block head%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/deck.css') }}">
+{% endblock %}
 
 {% block title %}{{deck.nom}}{% endblock %}
 
 {% block content %}
-
 <div class="deck">
     <div class="container_deck">
-        <h2>{{deck.nom}}</h2>
-        <p>{{deck.description}}</p>
-        <p>{{deck.nom_général}}</p>
-        <p>{{deck.taux_victoire if deck.taux_victoire != None else '0'}} / {{deck.taux_defaite if deck.taux_defaite != None else '0'}}</p>
-
+        <h2 class="deck-title">{{deck.nom}}</h2>
+        <div class="deck-info-bar">
+            <div class="info-item" title="Nom Général">
+                <span class="info-label">Nom Général:</span>
+                <span class="info-value">{{deck.nom_général}}</span>
+            </div>
+            <div class="info-item" title="Statistiques">
+                <span class="info-value">
+                    Pourcentages V / D : <br> {{deck.taux_victoire if deck.taux_victoire != None else '0'}}%
+                    / {{deck.taux_defaite if deck.taux_defaite != None else '0'}}%
+                </span>
+            </div>
+            <div class="info-item" title="Valite">
+                <span class="info-label">Valide:</span>
+                <span class="info-value">{{'Oui' if valide else 'Non'}}</span>
+        </div>
     </div>
+</div>
+
 {% if cartes != None %}
     <ul class="liste_cartes" id="deck_cartes">
         {% for c in cartes %}
             <li>
-                <div class="container_carte" id="{{'g' if c.nom == deck.nom_général else ''}}">
+                <div class="carte" id="{{'g' if c.nom == deck.nom_général else ''}}">
                     <img src="{{ url_for('static', filename='cartes/' ~ c.nom ~ '.jpg') }}" alt="carte" class="carte">
+                    <div class="infos_carte">
                     <p> {{c.nom}}</p>
                     <p>{{c.types}}</p>
                     <p>{{c.coc}}</p>
                     <p>{{c.atk_}}</p>
                     <p>{{c.def_}}</p>
-                
+                </div>
 
                 </div>
             </li>
         {% endfor %}
 
 {% endif %}
-    
-    
 
+<div class="info-item" title="Description">
+                <span class="info-label">Description:</span>
+                <span class="info-value">{{deck.description}}</span>
+</div>
+
+<div class="container_form">
+    <form action="{{url_for('copier_deck')}}" method="POST">
+        <input type="hidden" name="id_deck" value="{{deck.id_deck}}">
+        <button type="submit" class="btn btn-copier">Copier</button>
+    </form>
+</div>
+
+{% if deck.id_joueur == infos[0] %}
+    <div class="container_button">
+        <a href="{{url_for('construct', id_deck=deck.id_deck)}}" class="btn btn-modifier">Modifier</a>
+    </div>
+{% else %}
+    <div class="container_button">
+        <a href="{{url_for('suggerer_deck', id_deck=deck.id_deck)}}" class="btn btn-suggerer">Suggérer</a>
+    </div>
+{% endif %}
 {% endblock %}
 
 {% block erreur %}

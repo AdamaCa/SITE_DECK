@@ -1,52 +1,54 @@
 {% extends "layout.html" %}
 
 {% block title %}Profile{% endblock %}
-
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock head %}
 {% block content %}
 
-    <div class = "bienvenue">>
-    <h1>Bienvenue, {{infos[1].upper()}}</h1>
-    </div>
-<div class="container_parties">
-        {% if confrontations %}
-            <h2>Dernières confrontations</h2>
-            <ul class="liste_cartes" id="liste_confrontations">
-                {% for c in confrontations %}
-                <li>
-                    <div class="container_conf">
-                        <a href="{{ url_for('resultat', id_deck_vainqueur=c.vd, id_deck_perdant=c.pd, date=c.date) }}">
-                            <img src="{{ url_for('static', filename='cartes/' ~ c.g ~ '.jpg') }}" alt="deck" class="carte_confornte">
-                        </a>
-                    </div>
-                </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Aucune confrontation trouvée.</p>
-        {% endif %}
-    </div>
+<div class="bienvenue">
+    <h1>Bienvenue, {{ infos[1].upper() }}</h1>
+</div>
 
-    <div class="container_decks">
-    {% if decks%}
-        <h2>Mes decks</h2>
-        <ul class="liste_cartes", id="liste_decks">
-            {% for d in decks%}
-                <li>
-                    <div id="deck_general" clss="deck_general">
-                        <p>{{d.nom_général}}</p>
-                        <a href="{{url_for('deck', id_deck=d.id_deck)}}">
-                            <img src="{{url_for('static', filename='cartes/' ~ d.nom_général ~ '.jpg' )}}" alt="image du deck">
-                        </a>
-                    </div>
-                </li>
+<div class="container_parties">
+    {% if confrontations %}
+        <h2>Dernières confrontations</h2>
+        <ul class="liste_cartes" id="liste_confrontations">
+            {% for c in confrontations %}
+            <li>
+                <div class="container_conf">
+                    <a href="{{ url_for('resultat', id_deck_vainqueur=c.vd, id_deck_perdant=c.pd, date=c.date) }}">
+                        <img src="{{ url_for('static', filename='cartes/' ~ c.g ~ '.jpg') }}" alt="deck" class="carte_confornte">
+                    </a>
+                </div>
+            </li>
             {% endfor %}
         </ul>
-    
+    {% else %}
+        <p>Aucune confrontation trouvée.</p>
+    {% endif %}
+</div>
+
+<div class="container_decks">
+    {% if decks %}
+        <h2>Mes decks</h2>
+        <ul class="liste_cartes" id="liste_decks">
+            {% for d in decks %}
+            <li>
+                <div class="deck_general">
+                    <p>{{ d.nom }}</p>
+                    <a href="{{ url_for('deck', id_deck=d.id_deck) }}">
+                        <img src="{{ url_for('static', filename='cartes/' ~ d.nom_général ~ '.jpg') }}" alt="image du deck">
+                    </a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
     {% else %}
         <p>Aucun deck trouvé.</p>
     {% endif %}
-    
-    </div>
+</div>
+
 {% endblock %}
 
 

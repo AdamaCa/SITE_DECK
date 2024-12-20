@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.bienvenue {
+    text-align: center;
+    margin: 20px 0;
+    color: #333;
+}
+
+.container_parties, .container_decks {
+    width: 80%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #8b8b8b;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container_parties h2, .container_decks h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: wheat;
+}
+
+.liste_cartes {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.liste_cartes li {
+    margin: 10px;
+}
+
+.container_conf, .deck_general {
+    text-align: center;
+}
+
+.carte_confornte, .deck_general img {
+    max-width: 150px;
+    height: auto;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    transition: transform 0.3s ease;
+}
+
+.carte_confornte:hover {
+    transform: scale(1.05);
+}
+
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+p {
+    color: wheat;
+}

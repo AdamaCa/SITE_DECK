@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.bcontainer_conf {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.container_conf {
+    flex: 1;
+    text-align: center;
+}
+
+.carte_confornte {
+    max-width: 300px; /* Augmenter encore la taille des cartes */
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.carte_vainqueur {
+    border: 5px solid green; /* Bordure verte pour le vainqueur */
+}
+
+.carte_perdant {
+    border: 5px solid red; /* Bordure rouge pour le perdant */
+}
+
+.carte_confornte:hover {
+    transform: scale(1.20);
+}
+
+.vs {
+    margin: 0 20px;
+    font-size: 48px; /* Augmenter la taille du texte "VS" */
+    font-weight: bold;
+    color: wheat;
+}
+
+.container_date {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    color: wheat; /* Changer la couleur pour qu'elle soit visible sur le fond sombre */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}

@@ -5,19 +5,104 @@ body {
 
 }
 
+a {
+    text-decoration: none; /* Enlever le soulignage par défaut */
+    color: inherit; /* Garder la couleur du texte par défaut */
+    position: relative;
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    margin-top: 5px;
+    right: 0;
+    background: #000; /* Couleur de la bordure inférieure */
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-color: #333;
+    padding: 10px 0;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    margin: 0 15px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #007bb5;
+}
 
 .bar_info {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    width: 200px;
+    display: flex;
+    justify-content: space-between;
     padding: 10px;
-    border: 1px solid #1a1919;
+    background-color: #f4f4f4;
+}
+
+.bar_pseudo h2, .bar_uav p {
+    margin: 0;
+}
+
+.content {
+    padding: 20px;
+}
+
+a:hover::after {
+    width: 100%;
+    left: 0;
+    background: #007bb5; /* Couleur de la bordure inférieure au survol */
+}
+
+.bar_info {
+    width: fit-content;
+    width: 200px;
+    position: absolute;
+    top: 20px;
+    left: 85%;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid white;
+    align-items: first baseline;
+    border-radius: 6px;
     background-color: #1a1919;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     color: rgb(255, 255, 255);
+    gap: 10px;
 }
 
+.bar_info h2 {
+    margin: 2px;
+}
+
+.bar_info p {
+    margin: 2px;
+}
 .content {
     margin-right: 240px; /* Adjust this value based on the width of the sidebar */
 }
@@ -47,3 +132,40 @@ body {
 #g {
     fill: #cd0d0d;
 }
+.carte {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+
+.infos_carte {
+    position: absolute;
+    top: 50%;
+    left: 100%; /* Positionne l'élément juste à droite de l'image */
+    transform: translateY(-50%); /* Centre verticalement */
+    background-color: #1a1919;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1;
+    width: 150px; /* Ajustez la largeur selon vos besoins */
+    opacity: 0; /* Commence invisible */
+    visibility: hidden; /* Empêche l'interaction avec l'élément lorsqu'il est caché */
+    transition: opacity 0.5s ease, visibility 0s 0.5s; /* Animation de l'apparition */
+}
+
+.carte:hover .infos_carte {
+    opacity: 1; /* Rendre l'élément visible */
+    visibility: visible; /* Le rend interactif */
+    transition: opacity 0.5s ease, visibility 0s 0s; /* Animation de l'apparition */
+}
+
+.carte img:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
+
+

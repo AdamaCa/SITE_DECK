@@ -1,31 +1,36 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        {% block head  %}
-        <meta charset="utf-8">
-        <title>{%block title  %}{% endblock %} Mon titre</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
-        {%endblock%}
-    </head>
-    <body>
+<html lang="fr">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <meta charset="utf-8">
+    <title>{% block title %}Mon titre{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block head %}{% endblock %}
+</head>
+<body>
 
-    {%if infos %}
+    <nav>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('profile') }}">Profil</a></li>
+            <li><a href="{{ url_for('decks', ) }}">Decks</a></li>
+            <li><a href="{{ url_for('resultat') }}">Résultat</a></li>
+            <li><a href="{{ url_for('creation_deck') }}">Creer Deck</a></li>
+            <li><a href="{{ url_for('propositon') }}">Proposition</a></li>
+        </ul>
+    </nav>
+
+    {% if infos %}
     <div class="bar_info">
-        <h2>{{infos[1]}}</h2>
-        <p>{{infos[4]}}</p>
-        
+        <div class="bar_pseudo"><h2><a href="{{url_for('profile')}}">{{ infos[1] }}</a></h2></div>   
+        <div class="bar_uav"><p>UAV : {{ infos[4] }}</p> </div>
     </div>
-    {%endif%}
-        
-        <div class="containt">{% block content %}{% endblock %}</div>
-
-        <div class="msgerror" id="msgerror">
-            {% if error %}
-                <p>{% block erreur %}{% endblock  %}</p>
-            {% endif %}
-        </div>
-        
-    </body>
+    {% endif %}
+    
+    <div class="content">
+        {% block content %}
+        <!-- Le contenu de la page sera ici -->
+        {% endblock %}
+    </div>
+</body>
 </html>

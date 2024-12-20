@@ -1,0 +1,44 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    
+}
+
+td {
+    padding: 0px;
+    vertical-align: top;
+}
+
+tr {
+    border : 1px solid white;
+}
+.carte {
+    max-width: 150px; /* Ajustez cette valeur selon vos besoins */
+    text-align: center;
+}
+
+.carte img {
+    width: 100%;
+    height: auto;
+    max-width: 150px; /* Ajustez cette valeur selon vos besoins */
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.infos_carte {
+    font-size: 12px; /* Réduire la taille de la police pour les informations de la carte */
+}
+
+
+
+td.buttons-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+td.buttons-cell button {
+    margin: 5px; /* Espacement entre les boutons */
+    padding: 5px 10px;
+    font-size: 14px;
+}
