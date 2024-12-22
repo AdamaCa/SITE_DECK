@@ -5,7 +5,7 @@ def connect():
   conn = psycopg2.connect(
     dbname = 'cshamaloow',
     host = 'localhost',
-    password = 'Camaraa77.',
+    password = 'Camaraa77100.',
     cursor_factory = psycopg2.extras.NamedTupleCursor
   )
   conn.autocommit = True

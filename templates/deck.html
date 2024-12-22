@@ -13,12 +13,12 @@
         <div class="deck-info-bar">
             <div class="info-item" title="Nom Général">
                 <span class="info-label">Nom Général:</span>
-                <span class="info-value">{{deck.nom_général}}</span>
+                <span class="info-value" style="color: wheat">{{deck.nom_général}}</span>
             </div>
             <div class="info-item" title="Statistiques">
                 <span class="info-value">
-                    Pourcentages V / D : <br> {{deck.taux_victoire if deck.taux_victoire != None else '0'}}%
-                    / {{deck.taux_defaite if deck.taux_defaite != None else '0'}}%
+                     <span style="color: green" >V</span> / <span style="color: red">D</span> : <br> <span style="color: green" >{{deck.taux_victoire if deck.taux_victoire != None else '0'}}%</span>
+                    / <span style="color: red" >{{deck.taux_defaite if deck.taux_defaite != None else '0'}}%</span>
                 </span>
             </div>
             <div class="info-item" title="Valite">
@@ -32,8 +32,8 @@
     <ul class="liste_cartes" id="deck_cartes">
         {% for c in cartes %}
             <li>
-                <div class="carte" id="{{'g' if c.nom == deck.nom_général else ''}}">
-                    <img src="{{ url_for('static', filename='cartes/' ~ c.nom ~ '.jpg') }}" alt="carte" class="carte">
+                <div class="carte" >
+                    <img src="{{ url_for('static', filename='cartes/' ~ c.nom ~ '.jpg') }}" alt="carte" class="carte" id="{{'g' if c.nom == deck.nom_général else 'n' if c.nom not in collection else ''}}">
                     <div class="infos_carte">
                     <p> {{c.nom}}</p>
                     <p>{{c.types}}</p>
@@ -62,13 +62,21 @@
 
 {% if deck.id_joueur == infos[0] %}
     <div class="container_button">
-        <a href="{{url_for('construct', id_deck=deck.id_deck)}}" class="btn btn-modifier">Modifier</a>
+        <a href="{{url_for('construct', id_deck=deck.id_deck)}}" class="btn btn-modifier ">Modifier</a>
     </div>
+
+    <div class="container_form">
+        <form action="{{url_for('supprimer_deck')}}" method="POST">
+        <input type="hidden" name="id_deck" value="{{deck.id_deck}}">
+        <button type="submit" class="btn btn-suggerer">Supprimer</button>
+    </form>
 {% else %}
     <div class="container_button">
         <a href="{{url_for('suggerer_deck', id_deck=deck.id_deck)}}" class="btn btn-suggerer">Suggérer</a>
     </div>
 {% endif %}
+
+    </div>
 {% endblock %}
 
 {% block erreur %}

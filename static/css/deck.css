@@ -1,5 +1,4 @@
 
-/* Deck container */
 .deck {
     background-color: #5a5757;
     border-radius: 8px;
@@ -9,7 +8,6 @@
     padding: 20px;
 }
 
-/* Title */
 .deck-title {
     font-size: 24px;
     font-weight: bold;
@@ -18,7 +16,6 @@
     margin-bottom: 15px;
 }
 
-/* Info bar */
 .deck-info-bar {
     display: flex;
     flex-wrap: wrap;
@@ -30,7 +27,6 @@
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Info item */
 .info-item {
     flex: 1 1 calc(33.33% - 10px); 
     flex-direction: column;
@@ -51,12 +47,7 @@
     font-weight: 500;
 }
 
-/* Responsive design */
-@media (max-width: 500px) {
-    .info-item {
-        flex: 1 1 100%; 
-    }
-}
+
 
 .btn {
     display: inline-block;
@@ -72,30 +63,62 @@
 }
 
 .btn-copier {
-    background-color: #4CAF50; /* Vert */
+    background-color: #4CAF50; 
+    border: 1px solid white;
 }
 
 .btn-copier:hover {
-    background-color: #45a049;
+    background-color: #306b36;
 }
 
 .btn-modifier {
-    background-color: #008CBA; /* Bleu */
+    background-color: #008CBA; 
+    border: 1px solid white;
 }
+
+
+
+
 
 .btn-modifier:hover {
     background-color: #007bb5;
+
 }
 
 .btn-suggerer {
-    background-color: #f44336; /* Rouge */
+    border: 1px solid white;
+    background-color: #f44336; 
 }
 
 .btn-suggerer:hover {
     background-color: #da190b;
+    
 }
+
+.btn-suggerer:hover::after {
+    width: 100%;
+    left: 0;
+    display: none;
+}
+
+.btn-modifier:hover::after {
+    width: 100%;
+    left: 0;
+    display: none;
+}
+
 
 .container_form, .container_button {
     text-align: center;
     margin: 20px 0;
+}
+
+#g {
+    background-color: goldenrod;
+    border: 1px solid goldenrod; 
+}
+
+#n {
+    background-color: red;
+    border: 1px solid red;
 }

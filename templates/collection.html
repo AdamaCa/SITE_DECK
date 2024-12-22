@@ -10,18 +10,6 @@
 {% block content %}
  
 
-<nav>
-    <ul class="nav-links">
-        <li><a href="{{ url_for('home') }}">Accueil</a></li>
-        <li><a href="{{ url_for('profile') }}">Profil</a></li>
-        <li><a href="{{ url_for('deck') }}">Deck</a></li>
-        <li><a href="{{ url_for('resultat') }}">Résultat</a></li>
-        <li><a href="{{ url_for('construction') }}">Construction</a></li>
-        <li><a href="{{ url_for('proposition') }}">Proposition</a></li>
-        <li><a href="{{ url_for('collection') }}">Collection</a></li>
-    </ul>
-</nav>
-
     <div class="container">
     <div class="content-wrapper">
         <div class="grille_cartes">
@@ -41,7 +29,11 @@
     </div>
 </div>
 
-
+<div class="container-btn-ajout">
+    <form action="{{url_for('ajout_carte')}}" method="POST">
+        <button type="submit" class="btn btn-ajout">Ajouter une carte aleatoirement contre 1 UAV</button>
+    </form>
+</div>
 
 {% endblock %}
 

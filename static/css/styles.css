@@ -5,6 +5,10 @@ body {
 
 }
 
+.content {
+    width: 99%;
+}
+
 a {
     text-decoration: none; /* Enlever le soulignage par défaut */
     color: inherit; /* Garder la couleur du texte par défaut */
@@ -29,6 +33,36 @@ body {
     padding: 0;
 }
 
+.container-header {
+    width: 100%;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: #333;
+    border-bottom: 2px solid wheat;
+    border-radius: 10px;
+ 
+}
+
+.pseudo:hover {
+    color: #007bb5;
+    
+
+}
+
+.bar_info {
+    position: absolute;
+    right: 0;
+    top: 50; 
+    display: flex;
+    gap: 90px;
+    align-items: center;
+    padding: 40px;
+}
 nav {
     background-color: #333;
     padding: 10px 0;
@@ -57,16 +91,6 @@ nav {
     color: #007bb5;
 }
 
-.bar_info {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: #f4f4f4;
-}
-
-.bar_pseudo h2, .bar_uav p {
-    margin: 0;
-}
 
 .content {
     padding: 20px;
@@ -75,56 +99,33 @@ nav {
 a:hover::after {
     width: 100%;
     left: 0;
-    background: #007bb5; /* Couleur de la bordure inférieure au survol */
+    background: #007bb5; 
 }
 
-.bar_info {
-    width: fit-content;
-    width: 200px;
-    position: absolute;
-    top: 20px;
-    left: 85%;
-    padding: 6px;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid white;
-    align-items: first baseline;
-    border-radius: 6px;
-    background-color: #1a1919;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    color: rgb(255, 255, 255);
-    gap: 10px;
-}
 
-.bar_info h2 {
-    margin: 2px;
-}
 
-.bar_info p {
-    margin: 2px;
-}
 .content {
-    margin-right: 240px; /* Adjust this value based on the width of the sidebar */
+    margin-right: 240px; /
 }
 
 
 .liste_cartes {
-    list-style-type: none; /* Remove bullet points */
-    padding: 0; /* Remove default padding */
-    display: flex; /* Display list items in a row */
-    flex-wrap: wrap; /* Allow wrapping to the next line if necessary */
+    list-style-type: none; 
+    padding: 0; 
+    display: flex; 
+    flex-wrap: wrap; 
 }
 
 .liste_cartes li {
-    margin: 10px; /* Add some space between the items */
+    margin: 10px; 
 }
 
 .liste_cartes img {
-    max-width: 100px; /* Set a maximum width for the images */
-    height: auto; /* Maintain aspect ratio */
-    border: 1px solid #ccc; /* Optional: Add a border around the images */
-    padding: 5px; /* Optional: Add padding inside the border */
-    background-color: #f9f9f9; /* Optional: Add a background color */
+    max-width: 100px; 
+    height: auto; 
+    border: 1px solid #ccc; 
+    padding: 5px; 
+    background-color: #f9f9f9; 
 }
 
 
@@ -143,23 +144,23 @@ a:hover::after {
 .infos_carte {
     position: absolute;
     top: 50%;
-    left: 100%; /* Positionne l'élément juste à droite de l'image */
-    transform: translateY(-50%); /* Centre verticalement */
+    left: 100%; 
+    transform: translateY(-50%); 
     background-color: #1a1919;
     color: white;
     padding: 10px;
     border-radius: 5px;
     z-index: 1;
-    width: 150px; /* Ajustez la largeur selon vos besoins */
-    opacity: 0; /* Commence invisible */
-    visibility: hidden; /* Empêche l'interaction avec l'élément lorsqu'il est caché */
-    transition: opacity 0.5s ease, visibility 0s 0.5s; /* Animation de l'apparition */
+    width: 150px; 
+    opacity: 0; 
+    visibility: hidden; /
+    transition: opacity 0.5s ease, visibility 0s 0.5s; 
 }
 
 .carte:hover .infos_carte {
-    opacity: 1; /* Rendre l'élément visible */
-    visibility: visible; /* Le rend interactif */
-    transition: opacity 0.5s ease, visibility 0s 0s; /* Animation de l'apparition */
+    opacity: 1; 
+    visibility: visible; 
+    transition: opacity 0.5s ease, visibility 0s 0s; 
 }
 
 .carte img:hover {
@@ -168,3 +169,12 @@ a:hover::after {
 }
 
 
+#g {
+    background-color: goldenrod;
+    border: 1px solid goldenrod; 
+}
+
+#n {
+    background-color: red;
+    border: 1px solid red;
+}

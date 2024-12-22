@@ -2,7 +2,11 @@ import time
 from flask import Flask, render_template, request, redirect, url_for, session
 from random import randint
 import db
+from passlib.context import CryptContext
 app = Flask(__name__)
+
+
+password_ctx = CryptContext(schemes=['bcrypt']) # configuration de la bibliothèque
 
 # Clef secrète utilisée pour chiffrer les cookies
 app.secret_key = b'e98f5630f3f3f31745404ef51a38a843704259adc60454e1b40e6dc75e6eb772'
@@ -15,6 +19,30 @@ def index():
         return redirect(url_for('profile'))
     return render_template('index.html') 
 
+
+
+@app.route('/inscription', methods=['POST'])
+def inscription():
+    pseudo = request.form.get('pseudo', None)
+    email = request.form.get('email', None)
+    password = request.form.get('password', None)
+    
+    if pseudo == None or email == None or password == None or pseudo == "" or email == "" or password == "":
+        return render_template('index.html', error=True, msgerror="Champs manquants")
+    
+    with db.connect() as conn:
+        with conn.cursor() as cur:
+            cur.execute('SELECT * FROM joueur WHERE email = %s', (email,))
+            user = cur.fetchone()
+            if user:
+                return render_template('index.html', error=True, msgerror="Email déjà utilisé")
+            
+            cur.execute('INSERT INTO joueur (pseudo, email, mdp, uav) VALUES (%s, %s, %s, 10)', (pseudo, email, password_ctx.hash(password)))
+            
+    return render_template('index.html')
+
+     
+
 @app.route('/login', methods=['POST'])
 def login():
     if 'username' and 'id' in session:
@@ -25,16 +53,17 @@ def login():
     
     with db.connect() as conn:
         with conn.cursor() as cur:
-            cur.execute('SELECT * FROM joueur WHERE email = %s AND mdp = %s', (email, password))
+            cur.execute('SELECT * FROM joueur WHERE email = %s', (email,))
             user = cur.fetchone()
             if user:
-                session['username'] = user.pseudo
-                session['id'] = user.id_joueur
-                session["infos_profile"] = user
-                print(user)
-                print(session["infos_profile"])
-                return redirect(url_for('profile'))
-    return render_template('index.html', error=True)
+                if password_ctx.verify(password, user.mdp):
+                    print(password_ctx.verify(password, user.mdp))
+                    session['username'] = user.pseudo
+                    session['id'] = user.id_joueur
+                    session["infos_profile"] = user
+                    return redirect(url_for('profile'))
+                
+    return render_template('index.html', error=True, msgerror="Identifiants incorrects")
 
 @app.route('/profile')
 def profile():
@@ -88,8 +117,8 @@ def copier_deck():
             if deck == None:
                 return redirect(url_for('deck', id_deck=id_deck, error=True, msgerror="Deck non trouvé"))
             
-            if deck.id_joueur == session['id']:
-                return redirect(url_for('deck', id_deck=id_deck, error=True, msgerror="Impossible de copier son propre deck"))
+            
+                
             
             cur.execute('INSERT INTO deck (nom, description, nom_général, id_joueur) VALUES (%s, %s, %s, %s) returning id_deck', (deck.nom, deck.description, deck.nom_général, session['id']))
             id_cpy_deck = cur.fetchone()[0]
@@ -143,7 +172,7 @@ def ajout_carte():
             #On met a jour les info proflis
             cur.execute('SELECT * FROM joueur WHERE id_joueur = %s', (session['id'],))
             user = cur.fetchone()
-            session["infos_profile"]    = user.id_joueur
+            session["infos_profile"]    = user
             
     return redirect(url_for('collection'))
 
@@ -175,8 +204,14 @@ def deck(id_deck):
             #On recupere les cartes du deck
             cur.execute('SELECT * FROM contient natural join stats_cartes where id_deck = %s order by coc asc', (id_deck,))
             cartes = cur.fetchall()
+            
+            
+            #On recupere la collection du joueur
+            cur.execute('SELECT * FROM collectionne where id_joueur = %s', (session['id'],))
+            collection = cur.fetchall()
+            collection = [c.nom for c in collection]
                     
-    return  render_template('deck.html', cartes=cartes, deck=deck, infos=session["infos_profile"], valide=valide)
+    return  render_template('deck.html', cartes=cartes, deck=deck, infos=session["infos_profile"], valide=valide, collection=collection)
 
 #Route de la page de confrontation
 @app.route("/resultat")
@@ -195,7 +230,6 @@ def resultat():
         with conn.cursor() as cur:
             cur.execute("select date_, id_deck_vainqueur , d1.nom_général as vg , d2.nom_général as pg , id_deck_perdant from confronte join deck as d1 on d1.id_deck = id_deck_vainqueur join deck as d2 on d2.id_deck = id_deck_perdant where id_deck_vainqueur = %s and id_deck_perdant = %s and date_ = %s", (id_deck_vainquer, id_deck_perdant, date))
             confrontation = cur.fetchone()
-            print("confrotn: ",  confrontation)
             if confrontation != None:
                 return render_template('resultat.html', confronte=confrontation,  infos=session["infos_profile"])
             else:
@@ -265,6 +299,12 @@ def construct(id_deck):
             cur.execute("select * from carte natural join cout_concat as c1 where not exists (select cout.couleur from cout where c1.nom = cout.nom except select co1.couleur from cout as co1 where co1.nom = %s) and  not exists (select 1  from contient where id_deck = %s and nom = c1.nom)", (deck.nom_général,deck.id_deck))
             cartes = cur.fetchall()
             
+            #Recuperation des cartes qui synergisent avec le general
+            cur.execute("select * from synergie_général where carte=%s and not exists (select 1 from contient where id_deck = %s and nom = carte_associee)", (deck.nom_général,deck.id_deck) )
+            win_cartes = cur.fetchall()
+            print(win_cartes)
+            
+            
             #Recuperation de toutes les cartes ou les cartes filtre
             recherche = request.args.get('recherche', None)
             col = request.args.get('col', None)
@@ -299,8 +339,8 @@ def construct(id_deck):
             liste_col = [col[0] for col in cur.fetchall()]
     
     if request.endpoint == "suggerer_deck" or deck.id_joueur != session['id']:
-        return render_template('suggerer.html', cartes=cartes, cartes_deck=cartes_deck, infos=session["infos_profile"], deck=deck, liste_col=liste_col, all_cartes=all_cartes)
-    return render_template('construction.html', cartes=cartes, cartes_deck=cartes_deck, infos=session["infos_profile"], deck=deck, liste_col=liste_col, all_cartes=all_cartes)
+        return render_template('suggerer.html', cartes=cartes, cartes_deck=cartes_deck, infos=session["infos_profile"], deck=deck, liste_col=liste_col, all_cartes=all_cartes, win_cartes=win_cartes)
+    return render_template('construction.html', cartes=cartes, cartes_deck=cartes_deck, infos=session["infos_profile"], deck=deck, liste_col=liste_col, all_cartes=all_cartes, win_cartes=win_cartes)
 
 
 #Permet d'ajouter une carte au deck
@@ -402,6 +442,26 @@ def suggestion():
             if a_enlever == nom_general:
                 return redirect(url_for('suggerer_deck', id_deck=id_deck, error=True, msgerror="Impossible de supprimer le général"))
             
+
+            #On verifie que la carte a ajouter existe
+            cur.execute('SELECT * FROM carte where nom = %s', (a_ajouter,))
+            carte = cur.fetchone()
+            if carte == None:
+                return redirect(url_for('suggerer_deck', id_deck=id_deck, error=True, msgerror="Carte à ajouter non trouvée"))
+            
+            #On verifie que la carte a enlever existe
+            cur.execute('SELECT * FROM carte where nom = %s', (a_enlever,))
+            carte = cur.fetchone()
+            if carte == None:
+                return redirect(url_for('suggerer_deck', id_deck=id_deck, error=True, msgerror="Carte à enlever non trouvée"))
+            
+            #On verifie que la suggestion n'existe pas
+            cur.execute('SELECT * FROM suggérer WHERE id_deck = %s AND id_joueur = %s AND carte_ajoutée = %s AND carte_retirée = %s', (id_deck, session["id"], a_ajouter, a_enlever))
+            suggestion = cur.fetchone()
+            if suggestion != None:
+                return redirect(url_for('suggerer_deck', id_deck=id_deck, error=True, msgerror="Suggestion déjà existante"))
+            
+            
            #On cree une suggestion
             cur.execute('INSERT INTO suggérer (id_deck, id_joueur, carte_ajoutée, carte_retirée, id_proprio) VALUES (%s, %s, %s, %s, %s)', (id_deck,session["id"], a_ajouter, a_enlever, deck.id_joueur))
             
@@ -444,19 +504,52 @@ def choix_prop():
                 return redirect(url_for('propositon', error=True, msgerror="Erreur lors du choix de la proposition"))
             
             if choix == "accepter":
-                #On ajoute la carte
+                #On ajoute la carte 
                 cur.execute('INSERT INTO contient (id_deck, nom) VALUES (%s, %s)', (id_deck, ac))
                 #On supprime la carte
                 cur.execute('DELETE FROM contient WHERE id_deck = %s AND nom = %s', (id_deck, ec))
+                #On supprime les autres propositions ou carte_retirée est implique
+                cur.execute('DELETE FROM suggérer WHERE id_deck = %s AND carte_retirée = %s', (id_deck, ec))
                 
             #On supprime la proposition
             cur.execute('DELETE FROM suggérer WHERE id_deck = %s AND id_joueur = %s AND carte_ajoutée = %s AND carte_retirée = %s AND id_proprio = %s', (id_deck, id_joueur, ac, ec, id_proprio))
             
-            #On supprime les autres propositions ou carte_retirée est implique
-            cur.execute('DELETE FROM suggérer WHERE id_deck = %s AND carte_retirée = %s', (id_deck, ec))
             
     return redirect(url_for('propositon'))
+
+
+@app.route('/supprimer_deck', methods=['POST'])
+def supprimer_deck():
     
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    
+    id_deck = request.form.get('id_deck', None)
+    
+    
+    if id_deck == None or id_deck == "":
+        return redirect(url_for('profile'))
+    
+    
+    with db.connect() as conn:
+        
+        with conn.cursor() as cur:
+            #On verifie que le deck existe
+            cur.execute('SELECT * FROM deck where id_deck = %s', (id_deck,))
+            deck = cur.fetchone()
+            if deck == None:
+                return redirect(url_for('profile'))
+            
+            #On verifie que le deck appartient au joueur
+            if deck.id_joueur != session['id']:
+                return redirect(url_for('profile'))
+            
+            #On supprime le deck
+            cur.execute('DELETE FROM deck WHERE id_deck = %s', (id_deck,))
+            
+    return redirect(url_for('profile'))
+            
 @app.route('/decks')
 def decks():
     if 'username' not in session:
@@ -486,6 +579,49 @@ def recherche_deck():
             decks = cur.fetchall()
                 
     return render_template('decks.html', decks=decks, infos=session["infos_profile"])
+
+@app.route('/renommer_deck', methods=['POST'])
+def renommer_deck():
+    
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    id_deck = request.form.get('id_deck', None)
+    
+    if id_deck == None or id_deck == "":
+        return redirect(url_for('profile'))
+    
+    nom = request.form.get('nom', None)
+    
+    
+    if nom == None or nom == "":
+        return redirect(url_for('construct', id_deck=id_deck, error=True, msgerror="Impossible de nommer le deck avec un nom vide"))
+    
+    with db.connect() as conn:
+        with conn.cursor() as cur:
+            cur.execute('UPDATE deck SET nom = %s WHERE id_deck = %s', (nom, id_deck))
+            
+    return redirect(url_for('construct', id_deck=id_deck))
+    
+@app.route('/changer_description_deck', methods=['POST'])
+def changer_description_deck():
+    
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    id_deck = request.form.get('id_deck', None)
+    
+    if id_deck == None or id_deck == "":
+        return redirect(url_for('profile'))
+    
+    desc = request.form.get('desc', None)
+  
+    with db.connect() as conn:
+        with conn.cursor() as cur:
+            cur.execute('UPDATE deck SET description = %s WHERE id_deck = %s', (desc, id_deck))
+            
+    return redirect(url_for('construct', id_deck=id_deck))
+    
         
 if __name__ == '__main__':
   app.run()

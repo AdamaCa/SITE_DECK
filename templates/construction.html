@@ -6,25 +6,31 @@
 
 {% block title %}Construction{% endblock %}
 
+
 {% block content %}
 
-<div class="container">
-    <div class="content-wrapper">
-        <div class="grille_cartes">
-            {% for c in cartes_deck %}
-                <div class="carte">
-                    <img src="{{ url_for('static', filename='cartes/' ~ c.nom ~ '.jpg') }}" alt="carte" id="{{'g' if c.nom == deck.nom_général else ''}}">
-                    <div class="infos_carte">
-                        <p>{{ c.nom }}</p>
-                        <p>{{ c.types }}</p>
-                        <p>{{ c.coc }}</p>
-                        <p>ATK : {{ c.atk_ }}</p>
-                        <p>DEF : {{ c.def_ }}</p>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
 
+<div class="container-construct">
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="grille_cartes">
+                {% for c in cartes_deck %}
+                    <div class="carte">
+                        <img src="{{ url_for('static', filename='cartes/' ~ c.nom ~ '.jpg') }}" alt="carte" id="{{'g' if c.nom == deck.nom_général else ''}}">
+                        <div class="infos_carte">
+                            <p>{{ c.nom }}</p>
+                            <p>{{ c.types }}</p>
+                            <p>{{ c.coc }}</p>
+                            <p>ATK : {{ c.atk_ }}</p>
+                            <p>DEF : {{ c.def_ }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container_select">
         <div class="container_select_ajouter">
             <form action="{{url_for('ajout_construct')}}" method="POST">
                 <input type="hidden" name="id_deck" value="{{deck.id_deck}}">
@@ -38,7 +44,9 @@
             </form>
         </div>
 
-        <div class="container_select_supprimer">
+       
+
+            <div class="container_select_supprimer">
             <form action="{{url_for('supprimer_construct')}}" method="POST">
                 <input type="hidden" name="id_deck" value="{{deck.id_deck}}">
                 <label for="liste_cartes" >Supprimer une carte</label>
@@ -51,7 +59,6 @@
                 </select>
                 <button type="submit">Supprimer</button>
             </form>
-
         
         <div class="container_select_cartes">
             <form action="{{url_for('construct', id_deck=deck.id_deck)}}">
@@ -68,7 +75,7 @@
             </form>
         </div>
 
-         <div class="container_select_ajouter_bis">
+        <div class="container_select_ajouter_bis">
             <form action="{{url_for('ajout_construct')}}" method="POST">
                 <input type="hidden" name="id_deck" value="{{deck.id_deck}}">
                 <label for="liste_cartes" >Ajouter une carte</label>
@@ -79,8 +86,44 @@
                 </select>
                 <button type="submit">Ajouter</button>
             </form>
+        
+
+        </div class="container_rename">
+        <form action="{{url_for('renommer_deck')}}" method="POST">
+            <input type="hidden" name="id_deck" value="{{deck.id_deck}}">
+            <label for="liste_cartes">Renommer le deck</label>
+            <input type="text" id="liste_cartes" name="nom" required placeholder="{{deck.nom}}">
+            <button type="submit">Renommer</button>
+        </form>
+
+        <div class="container_desc">
+        <form action="{{url_for('changer_description_deck')}}" method="POST">
+            <input type="hidden" name="id_deck" value="{{deck.id_deck}}">
+            <label for="liste_cartes" style="display: block;">Changer la description</label>
+            <textarea placeholder="Decrivez votre strategie" rows="4" cols="50" id="liste_cartes" name="desc" ></textarea>
+            <button type="submit">Modifier</button>
+        </form>
         </div>
-</div>
+
+
+        
+            <div class="container_select_winrate">
+            <form action="{{url_for('ajout_construct')}}" method="POST">
+                <input type="hidden" name="id_deck" value="{{deck.id_deck}}">
+                <label for="liste_cartes" >Ajouter carte(par winrate)</label>
+                <select id="liste_cartes" name="nom" aria-placeholder="nom | winrate avec carte | winrate sans carte">
+                    {% for c in win_cartes %}
+                        <option  value="{{ c.carte_associee }}">{{c.carte_associee}} |  {{ c.taux_victoire}} / {{c.taux_victoire_sans_carte}}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Ajouter</button>
+            </form>
+        
+        </div>
+        </div>
+                </div>
+
+
 
 
 {% endblock %}

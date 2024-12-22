@@ -25,14 +25,14 @@ body {
 }
 
 .carte_confornte {
-    max-width: 300px; /* Augmenter encore la taille des cartes */
+    max-width: 300px; 
     height: auto;
     border-radius: 10px;
     transition: transform 0.3s ease;
 }
 
 .carte_vainqueur {
-    border: 5px solid green; /* Bordure verte pour le vainqueur */
+    border: 5px solid green; 
 }
 
 .carte_perdant {
@@ -45,7 +45,7 @@ body {
 
 .vs {
     margin: 0 20px;
-    font-size: 48px; /* Augmenter la taille du texte "VS" */
+    font-size: 48px; 
     font-weight: bold;
     color: wheat;
 }
@@ -54,7 +54,7 @@ body {
     text-align: center;
     margin-top: 20px;
     font-size: 18px;
-    color: wheat; /* Changer la couleur pour qu'elle soit visible sur le fond sombre */
+    color: wheat; 
 }
 
 a {

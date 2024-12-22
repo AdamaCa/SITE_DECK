@@ -4,6 +4,11 @@ table {
     
 }
 
+.header-proposition{
+    color : white;
+    padding: 10px;
+}
+
 td {
     padding: 0px;
     vertical-align: top;
@@ -11,22 +16,38 @@ td {
 
 tr {
     border : 1px solid white;
+    border-color: wheat;
+}
+
+.container-table{
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-inline: auto;
+}
+th {
+    padding: 10px;
+    background-color: #333;
+    color: wheat;
+    font-size: 16px;
+    border-color: wheat;
 }
 .carte {
-    max-width: 150px; /* Ajustez cette valeur selon vos besoins */
+    max-width: 150px; 
     text-align: center;
 }
 
 .carte img {
     width: 100%;
     height: auto;
-    max-width: 150px; /* Ajustez cette valeur selon vos besoins */
+    max-width: 150px; 
     border-radius: 8px;
     object-fit: cover;
 }
 
 .infos_carte {
-    font-size: 12px; /* Réduire la taille de la police pour les informations de la carte */
+    font-size: 12px; 
 }
 
 
@@ -38,7 +59,7 @@ td.buttons-cell {
 }
 
 td.buttons-cell button {
-    margin: 5px; /* Espacement entre les boutons */
+    margin: 5px; 
     padding: 5px 10px;
     font-size: 14px;
 }

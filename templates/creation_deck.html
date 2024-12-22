@@ -1,11 +1,19 @@
 {% extends "layout.html" %}
 
 {% block title %}Construction{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/creation_deck.css') }}">
+    <style>
+        body{
+            color: wheat;
+        }
+    </style>
+{% endblock %}
 
 {% block content %}
-    <div class="container_construction">
+
+    <div class="container_construction" style="margin-top: 100px">
         <h1>Construction</h1>
-        <p>Here you can build your deck</p>
     </div>
 
     <div class="container_construction">

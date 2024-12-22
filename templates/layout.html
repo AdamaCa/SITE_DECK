@@ -10,10 +10,11 @@
 </head>
 <body>
 
+<div class="container-header">
     <nav>
         <ul class="nav-links">
             <li><a href="{{ url_for('profile') }}">Profil</a></li>
-            <li><a href="{{ url_for('decks', ) }}">Decks</a></li>
+            <li><a href="{{ url_for('decks' ) }}">Decks</a></li>
             <li><a href="{{ url_for('creation_deck') }}">Creer Deck</a></li>
             <li><a href="{{ url_for('propositon') }}">Proposition</a></li>
             <li><a href="{{ url_for('collection') }}">Collection</a></li>
@@ -22,10 +23,12 @@
 
     {% if infos %}
     <div class="bar_info">
-        <div class="bar_pseudo"><h2><a href="{{url_for('profile')}}">{{ infos[1] }}</a></h2></div>   
-        <div class="bar_uav"><p>UAV : {{ infos[4] }}</p> </div>
+        <h2 class="pseudo"><a href="{{url_for('profile')}}">{{ infos[1] }}</a></h2>
+        <p>UAV : {{ infos[4] }}</p> 
     </div>
     {% endif %}
+
+</div>
     
     <div class="content">
         {% block content %}

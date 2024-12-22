@@ -13,6 +13,22 @@
 
         <button type="submit">Connexion</button>
     </form>
+
+    
+    <p>Pas encore inscrit</p>
+
+    <form action="inscription" id="inscription" method="post">
+
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" required>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+        <label for="password">Pseudo</label>
+        <input type="password" name="pseudo" id="password" required>
+
+        <button type="submit">inscription</button>
+    </form>
+
     {% if error %}
       <p>Identifiant Invalides</p>
     {% endif %}
